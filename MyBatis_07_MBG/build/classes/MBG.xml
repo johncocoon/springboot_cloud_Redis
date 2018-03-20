@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+
+	<!-- 
+		MyBatis3 : 豪华尊享版
+		MyBatis3Simple : 简单亲民版
+	 -->
+	<context id="MySQL" targetRuntime="MyBatis3Simple">
+	
+		<!-- 抑制注释生成 -->
+		<commentGenerator>
+		  <property name="suppressAllComments" value="true" />
+		</commentGenerator>
+	
+		<!-- 数据库连接信息 -->
+		<jdbcConnection 
+			driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/atcrowdfunding" 
+			userId="root" 
+			password="123456">
+		</jdbcConnection>
+		
+		
+		<!-- 处理Java类和SQL类型之间转换
+			是否强制将数据库的浮点类型转换为java中BigDecimal类型.
+		 -->
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- 
+			设置生成的Entity Class存放的位置
+				targetProject : 设置生成的实体类存放到哪个项目中
+				targetPackage : 设置生成的实体类存放到哪个包下
+				enableSubPackages : 是否将数据库名称作为包的一部分
+				trimStrings : 是否将数据库字段值,去掉两端空格,再封装给实体类对象.
+		 -->
+		<javaModelGenerator 
+			targetPackage="com.atguigu.atcrowdfunding.bean"
+			targetProject=".\src">
+			<property name="enableSubPackages" value="false" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+
+		<!-- 
+			设置生成的映射配置文件存放的位置				
+		 -->
+		<sqlMapGenerator 			
+			targetPackage="com.atguigu.atcrowdfunding.manager.dao"
+			targetProject=".\src">
+			<property name="enableSubPackages" value="false" />
+		</sqlMapGenerator>
+
+		<!-- 
+			设置生成的Mapper接口存放的位置
+			type="XMLMAPPER" : 采用XML方式进行映射配置
+			type="ANNOTATEDMAPPER" : 采用注解方式进行映射配置 
+		 -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.atguigu.atcrowdfunding.manager.dao" 
+			targetProject=".\src">
+			<property name="enableSubPackages" value="false" />
+		</javaClientGenerator>
+
+		<!-- 
+			设置实体类和表的映射关联:
+		 -->
+		<!-- 
+			设置实体类和表的映射关联:
+		 -->
+		<table tableName="t_account_type_cert" domainObjectName="AccountTypeCert"/>
+		<table tableName="t_advertisement" domainObjectName="Advert"/>
+		<table tableName="t_cert" domainObjectName="Cert"/>
+		<table tableName="t_dictionary" domainObjectName="Dictionary"/>
+		<table tableName="t_member" domainObjectName="Member"/>
+		<table tableName="t_member_address" domainObjectName="MemberAddress"/>
+		<table tableName="t_member_cert" domainObjectName="MemberCert"/>
+		<table tableName="t_member_project_follow" domainObjectName="MemberProjectFollow"/>
+		<table tableName="t_message" domainObjectName="Message"/>
+		<table tableName="t_order" domainObjectName="Order"/>
+		<table tableName="t_param" domainObjectName="Param"/>
+		<table tableName="t_permission" domainObjectName="Permission"/>
+		<table tableName="t_project" domainObjectName="Project"/>
+		<table tableName="t_project_tag" domainObjectName="ProjectTag"/>
+		<table tableName="t_project_type" domainObjectName="ProjectType"/>
+		<table tableName="t_return" domainObjectName="Return"/>
+		<table tableName="t_role" domainObjectName="Role"/>
+		<table tableName="t_role_permission" domainObjectName="RolePermission"/>
+		<table tableName="t_tag" domainObjectName="Tag"/>		
+		<table tableName="t_type" domainObjectName="Type"/>
+		<table tableName="t_user" domainObjectName="User"/>
+		<table tableName="t_user_role" domainObjectName="UserRole"/>
+	</context>
+</generatorConfiguration>

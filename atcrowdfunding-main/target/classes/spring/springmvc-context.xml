@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <!-- 启用注解功能 -->
+  <!--   <context:annotation-config /> -->
+    <context:component-scan base-package="com.atguigu.atcrowdfunding.controller" use-default-filters="false">
+    		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+   
+    
+    <!-- 字符串字符编码转换 -->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" >
+        <property name="messageConverters">   
+	         <list>
+	             <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">   
+	                <property name="supportedMediaTypes">
+	                      <list>
+	                          <value>application/json;charset=UTF-8</value>
+	                     </list>   
+	                </property>   
+	             </bean>   
+	         </list>   
+	    </property>
+    </bean>
+    
+    <context:component-scan base-package="com.atguigu.atcrowdfunding*" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+	
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
+        <property name="prefix" value="/WEB-INF/jsp/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+    
+   
+   <bean id="freemarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<!-- <property name="templateLoaderPath" value="/WEB-INF/ftl/" /> -->
+		<property name="templateLoaderPaths">
+			<list>
+				<!-- <value>/WEB-INF/ftl/</value> -->
+				<value>classpath:/templates/</value>
+			</list>
+		</property>
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="defaultEncoding">UTF-8</prop>
+				<!-- FreeMarker默认每隔5秒检查模板是否被更新，如果已经更新了，就会重新加载并分析模板。 但经常检查模板是否更新可能比较耗时。如果你的应用运行在生产模式下，而且你预期模板不会经常更新， 
+					则可以将更新的延迟时间延长至一个小时或者更久。 可以通过为freemarkerSettings属性设置template_update_delay达到这一目的,0 
+					表示每次都重新加载 -->
+				<prop key="template_update_delay">0</prop>
+				<prop key="default_encoding">UTF-8</prop>
+				<prop key="number_format">0.##########</prop>
+				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+				<prop key="classic_compatible">true</prop>
+				<prop key="template_exception_handler">ignore</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
+		p:prefix="/" p:suffix=".ftl">
+		<property name="cache" value="false" />
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
+		<property name="contentType" value="text/html;charset=UTF-8"></property>
+		<property name="exposeRequestAttributes" value="true" />
+		<property name="exposeSessionAttributes" value="true" />
+		<property name="exposeSpringMacroHelpers" value="true" />
+		<property name="requestContextAttribute" value="base"></property>
+		<property name="order" value="0"></property>
+	</bean>
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+    
+    
+    
+    
+    <bean  class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">  
+        <property name="exceptionMappings">  
+            <props>
+                 	<prop key="com.atguigu.atcrowdfunding.common.Exception.UserException">login</prop>
+                	<prop key="java.lang.Exception">error/error</prop> 
+                	<prop key="com.atguigu.atcrowdfunding.common.Exception.UserRegistException">reg</prop>
+                	
+            </props>  
+        </property>  
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" p:defaultEncoding="UTF-8">
+        <property name="maxUploadSize" value="2097152"/>
+        <property name="resolveLazily" value="true"/>
+    </bean>
+    
+    <mvc:default-servlet-handler/>
+    <!-- 会自动装配一个org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter    
+    	如果没有的话  会自动装配org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter   这个是spring 3.2的  过期的方法
+     -->
+    <mvc:annotation-driven />   
+    
+    <mvc:interceptors>
+    		<mvc:interceptor>
+    			<mvc:mapping path="/**"/>
+    			<mvc:exclude-mapping path="/user/dologin.do"/>
+    			<mvc:exclude-mapping path="/toLogin.htm"/>
+    			<mvc:exclude-mapping path="/toindex.htm"/>
+    			<bean id="loginInterceptor" class="com.atguigu.atcrowdfunding.common.Interceptor.LoginInterceptor"></bean>
+    		</mvc:interceptor>
+    </mvc:interceptors> 
+    
+</beans>

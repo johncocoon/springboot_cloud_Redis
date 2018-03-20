@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+		<!-- 这个是按照一定的打顺序来编写 -->
+		
+		<!-- 你也可以是在这个properties中设置数据库连接的相关配置  通过property -->
+		<properties resource="db.properties">
+		</properties>
+		<settings>
+			<setting name="mapUnderscoreToCamelCase" value="true"/>
+			<setting name="jdbcTypeForNull" value="NULL"/>
+			
+				
+		 	<!-- 配置开启延迟加载 -->
+		 	<setting name="lazyLoadingEnabled" value="true"/>
+		 	<!-- 配置加载的属性的方式是按需加载 还是全部加载 -->
+		 	<setting name="aggressiveLazyLoading" value="false"/>
+		 	<!-- 配置二级缓存 -->
+		 	<setting name="cacheEnabled" value="true"/>
+		</settings>
+		<typeAliases>
+		
+				
+		</typeAliases>
+		<!-- plugins
+			mybatis拦截机制
+			executor  执行器
+			ParamterHandler		处理
+			ResultSetHandler
+			StatementHandler
+			
+			pageHelper 分页插件
+			 -->
+			 
+			 
+		<plugins>
+			<plugin interceptor="com.github.pagehelper.PageInterceptor" />
+		</plugins>	 
+			 
+		<!-- environments 环境
+			<transaction  事务管理器
+				JDBC:JdbcTransactionFactory
+				MANAGED：ManagedTransactionFactory
+				
+				最终交给spring,使用spring的声明事务
+			<dataSource  数据源
+			
+				未来都是交给spring容器中获取连接   
+				
+		 -->
+		<environments default="mysql">
+				<environment id="mysql"><!-- 这里  transactionManager是必须设置的  -->	
+					<transactionManager type="JDBC"/>
+						<dataSource type="POOLED">
+								<property name="driver" value="${jdbc.driver}" />
+			                	<property name="url" value="${jdbc.url}" />
+				                 <property name="username" value="${jdbc.user}" />
+								<property name="password" value="${jdbc.pass}" />
+						</dataSource>
+				</environment>
+			
+		</environments>
+		
+		<!-- <databaseIdProvider: 
+				mybatis 在移植上进行的处理  通过支持不同的数据库来进行移植
+				
+				Oricale Mysql  以后开发的时候不确定的是以后使用那一中 数据库  这是就可以指定  ‘
+				
+				通过DB_VENDOR  获取数据库厂商的别名   设置别名
+				
+				然后通过这个别名去找sql语句中带有databaseId的  sql语句  
+				
+		-->
+		 <databaseIdProvider type="DB_VENDOR">
+		 		<property name="MySQL" value="mysql"/>
+		 		<property name="Oracle" value="oracle"/>
+		 </databaseIdProvider>	
+		 
+		<!-- package中  进行批处理   不需要一个个设置了
+				你可以把文件放到一个专门管理资源包下  这个资源包必须是与接口类名一致的情况下  
+			以为是你在编译的时候  会在lib下就是类路径下生成字节码问价 以及在 同一个包夏明  
+			  mybatis是有约束的 条件   你必须是要在同一个类包下  才能两个文件联系到一起   这样就可以解析 
+			  
+			  但是 你也可以是通过接口中方法上添加一个注解  来指定sql语句  但是这就是和代码耦合到一起  这不是我们使用的风格  因为是我们设计mybatis是用来
+			  和java代码分开的来的  这样就又回到了 初始点   没有用
+		
+		 -->
+		<mappers>
+				<!-- <mapper class="com.wzy.Mapping.EmployeeMapper"/> -->
+				<package name="com.wzy.Mapper"/>
+		</mappers>
+		
+</configuration>
